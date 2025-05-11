@@ -25,6 +25,7 @@ public class WebSocketService {
      */
     public void sendNodeStateUpdate(String nodeId, String state) {
         NodeStateMessage message = new NodeStateMessage(nodeId, state);
+        System.out.println("[DEBUG] Preparing to send WebSocket message: nodeId=" + nodeId + ", state=" + state + " to topic /topic/node-activated");
         messagingTemplate.convertAndSend("/topic/node-activated", message);
         System.out.println("Sent WebSocket message: nodeId=" + nodeId + ", state=" + state);
     }

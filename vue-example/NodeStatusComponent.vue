@@ -33,7 +33,7 @@ const connectWebSocket = () => {
   // Connect handler
   stompClient.onConnect = (frame) => {
     console.log('Connected to WebSocket');
-    
+
     // Subscribe to node activation topic
     stompClient.subscribe('/topic/node-activated', (message) => {
       const data = JSON.parse(message.body);
@@ -76,7 +76,7 @@ onUnmounted(() => {
     <div class="node-list">
       <div v-for="(state, nodeId) in nodes" :key="nodeId" class="node-item">
         <div class="node-id">{{ nodeId }}</div>
-        <div class="node-state" :class="{ 'running': state === 'RUNNING' }">
+        <div class="node-state" :class="{ 'running': state === 'RUNNING', 'done': state === 'DONE' }">
           {{ state }}
         </div>
       </div>
@@ -111,5 +111,9 @@ onUnmounted(() => {
 
 .node-state.running {
   color: #4caf50;
+}
+
+.node-state.done {
+  color: #2196f3;
 }
 </style>
