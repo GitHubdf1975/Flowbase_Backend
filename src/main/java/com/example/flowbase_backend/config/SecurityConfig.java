@@ -17,7 +17,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())               // CORS AN
                 .csrf(AbstractHttpConfigurer::disable)         // CSRF AUS
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/ws/**", "/topic/**", "/app/**", "/api/git/**").permitAll()
+                        .requestMatchers("/ws/**", "/topic/**", "/app/**", "/api/git/**", "/activate/nodeA").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults());

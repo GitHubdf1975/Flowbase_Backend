@@ -74,4 +74,15 @@ public class NodeService {
     public boolean getNodeStatus(String nodeName) {
         return nodeStatus.getOrDefault(nodeName, false);
     }
+
+    /**
+     * Activates Node A immediately without delay
+     */
+    public void activateNodeAImmediately() {
+        // Activate Node A
+        nodeStatus.put(NODE_A, true);
+        System.out.println("Node A has been activated immediately");
+        // Send WebSocket message
+        webSocketService.sendNodeStateUpdate("node-A", "RUNNING");
+    }
 }

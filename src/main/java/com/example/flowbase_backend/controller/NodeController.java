@@ -48,4 +48,14 @@ public class NodeController {
     public ResponseEntity<Map<String, Boolean>> getNodeStatus() {
         return ResponseEntity.ok(nodeService.getAllNodeStatus());
     }
+
+    /**
+     * Endpoint to immediately activate Node A (change from Idle to Running)
+     * @return Response indicating the node has been activated
+     */
+    @GetMapping("/activate/nodeA")
+    public ResponseEntity<String> activateNodeA() {
+        nodeService.activateNodeAImmediately();
+        return ResponseEntity.ok("Node A has been activated immediately.");
+    }
 }
