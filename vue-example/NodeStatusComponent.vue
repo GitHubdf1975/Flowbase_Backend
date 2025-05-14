@@ -1,63 +1,9 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
-import { Client } from '@stomp/stompjs';
+import { onMounted, onUnmounted } from 'vue';
+import { useWebSocket } from './useWebSocket';
 
-// State for node statuses
-const nodes = ref({
-  'node-A': 'INACTIVE',
-  'node-B': 'INACTIVE'
-});
-
-// STOMP client reference
-let stompClient = null;
-
-// Function to update node state
-const updateNodeState = (nodeId, state) => {
-  nodes.value[nodeId] = state;
-  console.log(`Node ${nodeId} state updated to ${state}`);
-};
-
-// Connect to WebSocket
-const connectWebSocket = () => {
-  // Create STOMP client
-  stompClient = new Client({
-    brokerURL: 'ws://localhost:8080/ws',
-    debug: function (str) {
-      console.log('STOMP: ' + str);
-    },
-    reconnectDelay: 5000,
-    heartbeatIncoming: 4000,
-    heartbeatOutgoing: 4000
-  });
-
-  // Connect handler
-  stompClient.onConnect = (frame) => {
-    console.log('Connected to WebSocket');
-
-    // Subscribe to node activation topic
-    stompClient.subscribe('/topic/node-activated', (message) => {
-      const data = JSON.parse(message.body);
-      updateNodeState(data.nodeId, data.state);
-    });
-  };
-
-  // Error handler
-  stompClient.onStompError = (frame) => {
-    console.error('STOMP error', frame.headers['message']);
-    console.error('Additional details', frame.body);
-  };
-
-  // Start connection
-  stompClient.activate();
-};
-
-// Disconnect from WebSocket
-const disconnectWebSocket = () => {
-  if (stompClient) {
-    stompClient.deactivate();
-    console.log('Disconnected from WebSocket');
-  }
-};
+// Use the WebSocket composable
+const { nodes, connectWebSocket, disconnectWebSocket } = useWebSocket();
 
 // Connect when component is mounted
 onMounted(() => {
